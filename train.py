@@ -92,6 +92,7 @@ parser.add_argument('--weight_decay', type=float, default=0.0)
 parser.add_argument('--optimizer', type=str, default='adamw')
 parser.add_argument('--adam_epsilon', type=float, default=1e-8)
 parser.add_argument('--adam_beta2', type=float, default=0.999)
+parser.add_argument('--batch_size', type=int, default=256)
 args = parser.parse_args()
 
 config = {
@@ -106,6 +107,8 @@ config = {
     "adam_epsilon": args.adam_epsilon,
     "adam_beta2": args.adam_beta2,
 }
+
+BATCH_SIZE = args.batch_size
 
 # Define run name based on non-default script arguments
 non_default_args = []
