@@ -8,7 +8,7 @@ In this project, you will optimize the hyperparameters of a model in 3 stages.
 ## Paraphrase Detection
 We finetune [distilbert-base-uncased](https://huggingface.co/distilbert-base-uncased) on [MRPC](https://huggingface.co/datasets/glue/viewer/mrpc/train), a paraphrase detection dataset. This notebook is adapted from a [PyTorch Lightning example](https://lightning.ai/docs/pytorch/1.9.5/notebooks/lightning_examples/text-transformers.html).
 """
-
+import os
 import argparse
 
 from datetime import datetime
@@ -32,6 +32,9 @@ from lightning.pytorch.loggers import WandbLogger
 
 from dotenv import load_dotenv
 load_dotenv()
+
+WANDB_PROJECT = os.getenv('WANDB_PROJECT', None)
+WANDB_ENTITY = os.getenv('WANDB_ENTITY', None)
 
 L.seed_everything(42)
 
@@ -373,7 +376,7 @@ def train():
 
     # Setup logger
     logger = WandbLogger(
-        project="hslu-mlops-project1"
+        project=WANDB_PROJECT
     )
 
     # Setup data module
@@ -416,8 +419,8 @@ def train():
 if RUN_SWEEP:
   sweep_id = wandb.sweep(
       sweep=sweep_config,
-      project="hslu-mlops-project1",
-      entity="timon-schmid-hochschule-luzern"
+      project=WANDB_PROJECT,
+      entity=WANDB_ENTITY
   )
 
   # Run the sweep agent
@@ -430,7 +433,7 @@ if RUN_SWEEP:
 
 # Run single training with config
 wandb.init(
-    project="hslu-mlops-project1",
+    project=WANDB_PROJECT,
     name=run_name,
     config=config
 )
@@ -462,7 +465,7 @@ model = GLUETransformer(
 
 # Setup logger
 logger = WandbLogger(
-    project="hslu-mlops-project1",
+    project=WANDB_PROJECT,
     name=run_name,
 )
 

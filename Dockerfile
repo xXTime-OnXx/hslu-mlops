@@ -2,9 +2,10 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies needed for PyTorch and transformers
+# Install minimal system dependencies
 RUN apt-get update && apt-get install -y \
-    git
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 
@@ -22,4 +23,5 @@ CMD ["python", "train.py", \
      "--warmup_steps", "10", \
      "--lr_schedule", "linear", \
      "--weight_decay", "0.0", \
-     "--optimizer", "adamw"]
+     "--optimizer", "adamw", \
+     "--batch_size", "256"]
